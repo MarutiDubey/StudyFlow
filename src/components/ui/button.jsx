@@ -1,0 +1,103 @@
+"use client";
+
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import cx from "classnames";
+
+const ButtonState = {
+  Rest: "rest",
+  Pressed: "pressed",
+  Raised: "raised",
+};
+
+const buttonVariants = cva(
+  cx(
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 outline-none aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+    "border-3 border-solid border-foreground text-foreground shadow-[-6px_6px_0_var(--foreground)] py-2 px-4",
+    "transition-[translate,box-shadow] duration-[150ms] ease-[cubic-bezier(.67,1.5,.95,1.24)]",
+    "cursor-pointer"
+  ),
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-accent",
+        primary: "bg-primary text-primary-foreground hover:bg-accent",
+        accent: "bg-accent text-accent-foreground hover:bg-accent",
+        destructive: "bg-destructive hover:bg-destructive dark:bg-destructive",
+        outline:
+          "border bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input dark:border-input dark:hover:bg-input",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent border-0 shadow-none",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        sm: "h-8 gap-1.5 px-3 has-[>svg]:px-2.5",
+        lg: "h-10 px-6 has-[>svg]:px-4",
+        icon: "size-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ref: externalRef,
+  ...props
+}) {
+  const Comp = asChild ? Slot : "button";
+  const elem = React.useRef(null);
+
+  const buttonStateToggle = (state, node) => {
+    if (!node) return;
+    const primaryColor = getComputedStyle(document.documentElement)
+      .getPropertyValue("--foreground")
+      .trim();
+    if (state === ButtonState.Pressed) {
+      node.style.setProperty("translate", "-4px 4px");
+      node.style.setProperty("box-shadow", `-2px 2px 0 ${primaryColor}`);
+    } else if (state === ButtonState.Raised) {
+      node.style.setProperty("translate", "4px -4px");
+      node.style.setProperty("box-shadow", `-8px 8px 0 ${primaryColor}`);
+    } else {
+      node.style.removeProperty("translate");
+      node.style.removeProperty("box-shadow");
+    }
+  };
+
+  const loadRef = (node) => {
+    if (!node) return;
+    elem.current = node;
+    node.addEventListener("mousedown", () => buttonStateToggle(ButtonState.Pressed, node));
+    node.addEventListener("mouseup", () => buttonStateToggle(ButtonState.Raised, node));
+    node.addEventListener("mouseleave", () => buttonStateToggle(ButtonState.Rest, node));
+    node.addEventListener("mouseenter", () => buttonStateToggle(ButtonState.Raised, node));
+    
+    if (externalRef && typeof externalRef === "function") {
+      externalRef(node);
+    } else if (externalRef && typeof externalRef === "object") {
+      externalRef.current = node;
+    }
+  };
+
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      ref={loadRef}
+      {...props}
+    />
+  );
+}
+
+export { Button, buttonVariants };

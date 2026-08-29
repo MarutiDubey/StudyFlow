@@ -1,0 +1,76 @@
+.ihb {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  padding: 13px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #f0f0f0;
+  cursor: none !important;
+  width: 100%;
+  outline: none;
+}
+
+.ihb-disabled {
+  opacity: 0.45;
+  cursor: not-allowed !important;
+  transition: opacity 0.3s ease;
+}
+
+.ihb-disabled:hover {
+  opacity: 1;
+}
+
+.ihb-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ihb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+  transform-origin: center;
+}
+
+.ihb-text {
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.ihb-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #111;
+  transform: translateX(60px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.ihb:hover .ihb-dot {
+  transform: scale(200);
+  background: #fff;
+}
+
+.ihb:hover .ihb-text {
+  transform: translateX(40px);
+  opacity: 0;
+}
+
+.ihb:hover .ihb-hover {
+  transform: translateX(0);
+  opacity: 1;
+}
