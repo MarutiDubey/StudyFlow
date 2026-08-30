@@ -13,7 +13,9 @@ import './InteractiveHoverButton.css'
 import './App.css'
 
 function App() {
-  const [themeMode, setThemeMode] = useState('comic')
+  const [themeMode, setThemeMode] = useState(() => {
+    return localStorage.getItem('studyflow_theme') || 'modern'
+  })
   const [view, setView] = useState('input')
   const [topic, setTopic] = useState('')
   const [cards, setCards] = useState([])
