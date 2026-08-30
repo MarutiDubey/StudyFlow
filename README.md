@@ -1,5 +1,7 @@
 # StudyFlow - AI Flashcard Generator
 
+🚀 **[Live Demo on Vercel](https://studyflashcard.vercel.app/)**
+
 A React app that takes any topic as input, sends it to Google Gemini AI, and generates interactive flashcards with a built-in quiz mode.
 
 ## Setup
