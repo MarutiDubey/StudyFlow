@@ -98,7 +98,7 @@ function ComicButton({ children, onClick, className = '', disabled = false, vari
     <motion.button
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
-      className={`font-black uppercase border-4 border-black font-mono ${className}`}
+      className={`cursor-target font-black uppercase border-4 border-black font-mono ${className}`}
       style={{ background: c.bg, color: c.text, boxShadow: `-4px 4px 0 ${c.shadow}` }}
       whileHover={!disabled ? {
         y: -3,
@@ -199,13 +199,13 @@ export default function ComicView({
   const progressPct = cards.length > 0 ? ((currentIndex + 1) / cards.length) * 100 : 0
 
   return (
-    <div className="min-h-screen w-full bg-white text-black font-mono flex flex-col items-center relative overflow-hidden">
+    <div className="min-h-screen w-full bg-white text-black font-mono flex flex-col items-center relative overflow-hidden" style={{ zoom: 1.15 }}>
 
       {/* Halftone bg */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, #00000015 1.5px, transparent 1.5px)',
+          backgroundImage: 'radial-gradient(circle, #00000040 1.5px, transparent 1.5px)',
           backgroundSize: '18px 18px',
           zIndex: 0,
         }}
@@ -214,7 +214,7 @@ export default function ComicView({
       {/* Burst word overlay */}
       {burst && <BurstWord word={burst.word} color={burst.color} visible={!!burst} />}
 
-      <div className="z-10 w-full max-w-2xl px-5 pt-14 pb-10 flex flex-col items-center">
+      <div className="z-10 w-full max-w-3xl px-7 pt-14 pb-10 flex flex-col items-center">
 
         {/* ──── INPUT VIEW ──── */}
         {view === 'input' && (
@@ -244,7 +244,7 @@ export default function ComicView({
                   onChange={e => setTopic(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!loading && topic.trim()) handleGenerate() } }}
                   placeholder="Enter any topic here..."
-                  className="w-full bg-transparent outline-none resize-none text-xl font-bold p-3 pt-4 font-mono placeholder:text-gray-400 text-black border-b-4 border-black"
+                  className="cursor-target w-full bg-transparent outline-none resize-none text-xl font-bold p-3 pt-4 font-mono placeholder:text-gray-400 text-black border-b-4 border-black"
                   rows={3}
                 />
               </div>

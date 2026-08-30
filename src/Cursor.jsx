@@ -1,79 +1,96 @@
-'use client'
-
-import { useState, useEffect, useRef } from 'react'
-import './Cursor.css'
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, AnimatePresence } from "motion/react";
+import "./Cursor.css";
 
 export default function SmoothFollower() {
-  const mouse = useRef({ x: 0, y: 0 })
-  const dot = useRef({ x: 0, y: 0 })
-  const ring = useRef({ x: 0, y: 0 })
-  const rafId = useRef(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const [pos, setPos] = useState({ dot: { x: 0, y: 0 }, ring: { x: 0, y: 0 } })
-  const [hovering, setHovering] = useState(false)
+  // Ring cursor me thoda lag spring effect diya hai
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+
+  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
+
+  // Dot ke liye snappy spring rakhi hai
+  const dotSpringConfig = { damping: 25, stiffness: 600, mass: 0.1 };
+  const dotXSpring = useSpring(cursorX, dotSpringConfig);
+  const dotYSpring = useSpring(cursorY, dotSpringConfig);
 
   useEffect(() => {
-    const onMove = (e) => {
-      mouse.current.x = e.clientX
-      mouse.current.y = e.clientY
-    }
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+    };
+    const onEnter = () => setIsVisible(true);
+    const onLeave = () => setIsVisible(false);
 
-    const onEnter = () => setHovering(true)
-    const onLeave = () => setHovering(false)
-
-    window.addEventListener('mousemove', onMove)
-
-    const elements = document.querySelectorAll('a, button, input, textarea, select, .card-wrapper')
-    elements.forEach(el => {
-      el.addEventListener('mouseenter', onEnter)
-      el.addEventListener('mouseleave', onLeave)
-    })
-
-    const lerp = (a, b, t) => a + (b - a) * t
-
-    const loop = () => {
-      dot.current.x = lerp(dot.current.x, mouse.current.x, 0.25)
-      dot.current.y = lerp(dot.current.y, mouse.current.y, 0.25)
-
-      ring.current.x = lerp(ring.current.x, mouse.current.x, 0.1)
-      ring.current.y = lerp(ring.current.y, mouse.current.y, 0.1)
-
-      setPos({
-        dot: { x: dot.current.x, y: dot.current.y },
-        ring: { x: ring.current.x, y: ring.current.y },
-      })
-
-      rafId.current = requestAnimationFrame(loop)
-    }
-
-    rafId.current = requestAnimationFrame(loop)
-
+    setIsVisible(true);
+    window.addEventListener("mousemove", moveCursor);
+    document.body.addEventListener("mouseenter", onEnter);
+    document.body.addEventListener("mouseleave", onLeave);
     return () => {
-      window.removeEventListener('mousemove', onMove)
-      elements.forEach(el => {
-        el.removeEventListener('mouseenter', onEnter)
-        el.removeEventListener('mouseleave', onLeave)
-      })
-      cancelAnimationFrame(rafId.current)
-    }
-  }, [])
+      window.removeEventListener("mousemove", moveCursor);
+      document.body.removeEventListener("mouseenter", onEnter);
+      document.body.removeEventListener("mouseleave", onLeave);
+    };
+  }, [cursorX, cursorY]);
+
+  useEffect(() => {
+    const onOver = (e) => {
+      const t = e.target;
+      // Added inputs, textareas, card wrappers so they trigger hover in StudyFlow
+      const isInteractive =
+        t.tagName === "BUTTON" ||
+        t.tagName === "A" ||
+        t.tagName === "INPUT" ||
+        t.tagName === "TEXTAREA" ||
+        t.tagName === "SELECT" ||
+        t.closest("button") ||
+        t.closest("a") ||
+        t.closest(".card-wrapper") ||
+        t.classList?.contains("cursor-hover-target");
+      setIsHovering(!!isInteractive);
+    };
+    window.addEventListener("mouseover", onOver);
+    return () => window.removeEventListener("mouseover", onOver);
+  }, []);
 
   return (
-    <div className="cursor-container">
-      <div
-        className="cursor-dot"
-        style={{
-          left: `${pos.dot.x}px`,
-          top: `${pos.dot.y}px`,
-        }}
-      />
-      <div
-        className={`cursor-ring ${hovering ? 'hover' : ''}`}
-        style={{
-          left: `${pos.ring.x}px`,
-          top: `${pos.ring.y}px`,
-        }}
-      />
-    </div>
-  )
+    <AnimatePresence>
+      {isVisible && (
+        <>
+          {/* Trailing ring */}
+          <motion.div
+            className="custom-cursor-ring"
+            style={{
+              x: cursorXSpring,
+              y: cursorYSpring,
+              translateX: "-50%",
+              translateY: "-50%",
+            }}
+            animate={{
+              scale: isHovering ? 1.5 : 1,
+              backgroundColor: isHovering ? "rgba(255,255,255,1)" : "rgba(255,255,255,0)",
+              borderColor: isHovering ? "transparent" : "rgba(255,255,255,0.5)",
+            }}
+            transition={{ duration: 0.2 }}
+          />
+          {/* Precise center dot */}
+          <motion.div
+            className="custom-cursor-dot"
+            style={{
+              x: dotXSpring,
+              y: dotYSpring,
+              translateX: "-50%",
+              translateY: "-50%",
+            }}
+            animate={{ opacity: isHovering ? 0 : 1 }}
+          />
+        </>
+      )}
+    </AnimatePresence>
+  );
 }

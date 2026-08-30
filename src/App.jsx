@@ -1,11 +1,13 @@
 import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { generateCards } from './api'
-import Flashcard from './Flashcard'
+import Flashcard, { GlowBorder } from './Flashcard'
 import SmoothFollower from './Cursor'
 import { FlickeringGrid } from './FlickeringGrid'
 import InteractiveHoverButton from './InteractiveHoverButton'
 import ComicView from './ComicView'
+import TargetCursor from './TargetCursor'
+import EchoText from './EchoText'
 import './InteractiveHoverButton.css'
 import './App.css'
 
@@ -26,6 +28,7 @@ function App() {
   const [showAnswer, setShowAnswer] = useState(false)
   const [quizDone, setQuizDone] = useState(false)
   const [slideDirection, setSlideDirection] = useState(1)
+  const [btnHovered, setBtnHovered] = useState(false)
 
   const toggleBtnRef = useRef(null)
 
@@ -61,6 +64,9 @@ function App() {
     <button
       ref={toggleBtnRef}
       onClick={() => switchTheme(isComic ? 'modern' : 'comic')}
+      onMouseEnter={() => setBtnHovered(true)}
+      onMouseLeave={() => setBtnHovered(false)}
+      className="cursor-target"
       style={{
         position: 'fixed',
         top: 20,
@@ -77,10 +83,13 @@ function App() {
         fontFamily: 'monospace',
         fontWeight: 'bold',
         fontSize: '0.85rem',
-        cursor: 'pointer',
+        cursor: 'none',
         letterSpacing: isComic ? '0.08em' : '0.02em',
         transition: 'all 0.2s ease',
-        boxShadow: isComic ? '-3px 3px 0 #fff' : 'none',
+        boxShadow: isComic
+          ? btnHovered ? '-5px 5px 0 #fff' : '-3px 3px 0 #fff'
+          : btnHovered ? '0 4px 16px rgba(0,0,0,0.18)' : 'none',
+        transform: btnHovered ? 'scale(1.07)' : 'scale(1)',
       }}
     >
       <span style={{ fontSize: '1rem' }}>{isComic ? '⚡' : '💥'}</span>
@@ -165,6 +174,7 @@ function App() {
     return (
       <>
         {ThemeToggleBtn}
+        <TargetCursor spinDuration={2} hideDefaultCursor={true} parallaxOn={true} cursorColor="#ff0000" targetSelector=".cursor-target" />
         <ComicView
           topic={topic} setTopic={setTopic} cards={cards} loading={loading} error={error} 
           handleGenerate={handleGenerate} view={view} setView={setView} 
@@ -196,7 +206,25 @@ function App() {
         {view === 'input' && (
           <motion.div key="input" className="container" variants={pageVariants} initial="initial" animate="animate" exit="exit">
             <div className="header">
-              <h1>StudyFlow</h1>
+              <h1>
+                <EchoText
+                  text="StudyFlow"
+                  echoes={10}
+                  lag={0.2}
+                  offset={32}
+                  direction="right"
+                  fade={0.7}
+                  blur={3}
+                  tint="#c084fc"
+                  mode="both"
+                  cursorRadius={350}
+                  duration={900}
+                  ease="ease-out"
+                  fontSize="clamp(4.5rem, 9vw, 7.5rem)"
+                  fontWeight={800}
+                  color="#f3e8ff"
+                />
+              </h1>
               <p className="text-purple-200/80">Enter any topic to generate AI-powered flashcards</p>
             </div>
             <div className="input-box">
@@ -230,10 +258,18 @@ function App() {
 
         {view === 'study' && cards.length > 0 && (
           <motion.div key="study" className="container" variants={pageVariants} initial="initial" animate="animate" exit="exit">
-            <div className="header">
+            <div className="header" style={{ marginBottom: '16px' }}>
               <h1 className="text-purple-100">{topic}</h1>
             </div>
-            <p className="text-white/60">{currentIndex + 1} / {cards.length}</p>
+            
+            <div className="w-full max-w-[640px] flex justify-end mb-4 px-2">
+              <div 
+                className="flex items-center justify-center text-white/40 text-xs font-mono tracking-widest bg-white/5 rounded-full border border-white/10"
+                style={{ padding: '6px 16px 8px 16px', lineHeight: '1' }}
+              >
+                {currentIndex + 1} OF {cards.length}
+              </div>
+            </div>
 
             <AnimatePresence mode="wait" custom={slideDirection}>
               <motion.div
@@ -260,21 +296,24 @@ function App() {
               <button
                 onClick={() => { setSlideDirection(-1); prevCard() }}
                 disabled={currentIndex === 0}
+                className="cursor-target"
               >
                 ← Prev
               </button>
+              <div className="divider" />
               <button
                 onClick={() => { setSlideDirection(1); nextCard() }}
                 disabled={currentIndex === cards.length - 1}
+                className="cursor-target"
               >
                 Next →
               </button>
             </div>
             <div className="action-buttons">
-              <button className="quiz-btn" onClick={() => startQuiz(cards)}>
+              <button className="quiz-btn cursor-target" onClick={() => startQuiz(cards)}>
                 Take Quiz
               </button>
-              <button className="secondary-btn" onClick={() => setView('input')}>
+              <button className="secondary-btn cursor-target" onClick={() => setView('input')}>
                 New Topic
               </button>
             </div>
@@ -320,10 +359,19 @@ function App() {
               </>
             ) : (
               <>
-                <div className="header">
+                <div className="header" style={{ marginBottom: '16px' }}>
                   <h1 className="text-2xl font-bold text-purple-100">Quiz</h1>
-                  <p className="text-white/60">{quizIndex + 1} / {quizCards.length}</p>
                 </div>
+                
+                <div className="w-full max-w-[640px] flex justify-end mb-4 px-2">
+                  <div 
+                    className="flex items-center justify-center text-white/40 text-xs font-mono tracking-widest bg-white/5 rounded-full border border-white/10"
+                    style={{ padding: '6px 16px 8px 16px', lineHeight: '1' }}
+                  >
+                    {quizIndex + 1} OF {quizCards.length}
+                  </div>
+                </div>
+
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={quizIndex}
@@ -331,16 +379,19 @@ function App() {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: -30, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="modern-quiz-card"
+                    className="quiz-card"
                   >
-                    <p className="text-xl text-white mb-6 text-center">{quizCards[quizIndex].question}</p>
+                    <GlowBorder />
+                    <p className="text-xl text-white mb-6 text-center relative z-10">{quizCards[quizIndex].question}</p>
                     {showAnswer ? (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-4"
                       >
-                        <p className="text-lg text-purple-200 bg-white/10 rounded-lg p-4 text-center">{quizCards[quizIndex].answer}</p>
+                        <div className="w-full min-h-[160px] flex items-center justify-center bg-white/5 border border-white/10 rounded-xl p-8 relative z-10">
+                          <p className="text-xl text-purple-100 text-center leading-relaxed m-0">{quizCards[quizIndex].answer}</p>
+                        </div>
                         <div className="action-buttons">
                           <button
                             onClick={() => handleAnswer(quizCards[quizIndex].id, 'correct')}
@@ -367,18 +418,19 @@ function App() {
                     )}
                   </motion.div>
                 </AnimatePresence>
-                <div className="quiz-nav">
+                <div className="nav-buttons" style={{ marginTop: '24px' }}>
                   <button
-                    className="quiz-nav-btn"
                     onClick={() => { setShowAnswer(false); if (quizIndex > 0) setQuizIndex(i => i - 1) }}
                     disabled={quizIndex === 0}
+                    className="cursor-target"
                   >
                     ← Prev
                   </button>
+                  <div className="divider" />
                   <button
-                    className="quiz-nav-btn quiz-nav-btn-next"
                     onClick={() => { setShowAnswer(false); if (quizIndex < quizCards.length - 1) setQuizIndex(i => i + 1) }}
                     disabled={quizIndex === quizCards.length - 1}
+                    className="cursor-target"
                   >
                     Next →
                   </button>
