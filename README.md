@@ -1,6 +1,6 @@
 # StudyFlow - AI Flashcard Generator
 
-A React app that takes a free-form text input, sends it to the Google Gemini API, and generates an interactive flashcard and quiz tool.
+A React app that takes a free-form text input, sends it to an LLM API, and generates an interactive flashcard and quiz tool.
 
 ## Setup Instructions
 
@@ -16,11 +16,11 @@ A React app that takes a free-form text input, sends it to the Google Gemini API
    ```
 
 3. Configure the environment variables:
-   - Obtain a free Gemini API key from Google AI Studio.
+   - Obtain your Tokenin API key.
    - Create a `.env` file in the root of the project.
    - Add your key:
      ```env
-     GEMINI_API_KEY=your_key_here
+     TOKENIN_API_KEY=your_key_here
      ```
 
 4. Start the application:
@@ -53,7 +53,7 @@ I used AI assistants to help scaffold boilerplate UI components and to troublesh
 
 ## Known Limitations
 
-- The application requires a valid Gemini API key and internet access to function.
+- The application requires a valid API key and internet access to function.
 - In rare cases, the LLM may return a heavily malformed JSON string that cannot be recovered by the built-in parser. When this happens, a fallback error UI is displayed.
 - Session data is kept in memory and is not persisted to a database.
 
