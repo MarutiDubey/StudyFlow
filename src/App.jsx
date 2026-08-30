@@ -71,10 +71,6 @@ function App() {
       onMouseLeave={() => setBtnHovered(false)}
       className="cursor-target"
       style={{
-        position: 'fixed',
-        top: 20,
-        right: 20,
-        zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
@@ -96,7 +92,7 @@ function App() {
       }}
     >
       <span style={{ fontSize: '1rem' }}>{isComic ? '⚡' : '💥'}</span>
-      {isComic ? 'MODERN MODE' : 'Comic Mode'}
+      <span className="hidden sm:inline">{isComic ? 'MODERN MODE' : 'Comic Mode'}</span>
     </button>
   )
 
@@ -177,10 +173,11 @@ function App() {
     return (
       <>
         <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
-        <div className="fixed top-5 left-5 z-40 flex items-center gap-4">
+        {/* Navigation Bar (Bottom on Mobile, Top on Desktop) */}
+        <div className="fixed bottom-0 left-0 w-full md:w-auto md:top-5 md:left-5 md:bottom-auto bg-yellow-300 md:bg-transparent border-t-4 border-black md:border-none p-3 md:p-0 flex justify-around md:justify-start items-center gap-2 md:gap-4 z-50 shadow-[0_-4px_0_#000] md:shadow-none">
           <button 
             onClick={() => setView('input')}
-            className="bg-yellow-300 text-black border-4 border-black font-black uppercase shadow-[4px_4px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#000] transition-all flex items-center justify-center cursor-target"
+            className="bg-white md:bg-yellow-300 text-black border-4 border-black font-black uppercase shadow-[4px_4px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#000] transition-all flex items-center justify-center cursor-target"
             style={{ padding: '10px' }}
             title="Home"
           >
@@ -191,18 +188,22 @@ function App() {
           </button>
           <button 
             onClick={() => setIsProfileOpen(true)}
-            className="bg-yellow-300 text-black border-4 border-black font-black uppercase shadow-[4px_4px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#000] transition-all flex items-center gap-2 cursor-target whitespace-nowrap flex-shrink-0"
+            className="bg-white md:bg-yellow-300 text-black border-4 border-black font-black uppercase shadow-[4px_4px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#000] transition-all flex items-center gap-2 cursor-target whitespace-nowrap flex-shrink-0"
             style={{ padding: '10px 20px' }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <span>Author Profile</span>
+            <span className="hidden sm:inline">Author Profile</span>
           </button>
+          <div className="md:fixed md:top-5 md:right-5 z-50">
+            {ThemeToggleBtn}
+          </div>
         </div>
-        {ThemeToggleBtn}
-        <TargetCursor spinDuration={2} hideDefaultCursor={true} parallaxOn={true} cursorColor="#ff0000" targetSelector=".cursor-target" />
+        <div className="hidden md:block">
+          <TargetCursor spinDuration={2} hideDefaultCursor={true} parallaxOn={true} cursorColor="#ff0000" targetSelector=".cursor-target" />
+        </div>
         <ComicView
           topic={topic} setTopic={setTopic} cards={cards} loading={loading} error={error} 
           handleGenerate={handleGenerate} view={view} setView={setView} 
@@ -221,7 +222,8 @@ function App() {
   return (
     <>
       <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
-      <div className="fixed top-5 left-5 z-40 flex items-center gap-4">
+      {/* Navigation Bar (Bottom on Mobile, Top on Desktop) */}
+      <div className="fixed bottom-0 left-0 w-full md:w-auto md:top-5 md:left-5 md:bottom-auto bg-[#1a1a1a]/95 backdrop-blur-lg border-t border-white/20 md:bg-transparent md:backdrop-blur-none md:border-none p-4 md:p-0 flex justify-around md:justify-start items-center gap-2 md:gap-4 z-50">
         <button 
           onClick={() => setView('input')}
           className="bg-white hover:bg-gray-200 border-2 border-black text-black rounded-full font-bold shadow-[0_4px_16px_rgba(255,255,255,0.1)] transition-all hover:scale-105 flex items-center justify-center cursor-target"
@@ -242,10 +244,12 @@ function App() {
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <span>Author Profile</span>
+          <span className="hidden sm:inline">Author Profile</span>
         </button>
+        <div className="md:fixed md:top-5 md:right-5 z-50">
+          {ThemeToggleBtn}
+        </div>
       </div>
-      {ThemeToggleBtn}
       <FlickeringGrid
         className="fixed inset-0 z-[-1]"
         squareSize={4}
@@ -257,7 +261,7 @@ function App() {
       <SmoothFollower />
       <AnimatePresence mode="wait">
         {view === 'input' && (
-          <motion.div key="input" className="container" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key="input" className="container pt-12 pb-28 md:pt-24 md:pb-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
             <div className="header">
               <h1>
                 <EchoText
@@ -285,7 +289,7 @@ function App() {
                 value={topic}
                 onChange={e => setTopic(e.target.value)}
                 placeholder="Enter topic (e.g., React hooks, Photosynthesis, World War 2)..."
-                className="w-full bg-black/30 border border-white/20 rounded-12px p-4 text-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
+                className="w-[90%] max-w-4xl bg-black/30 border border-white/20 rounded-12px p-4 text-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
                 rows={3}
               />
               {error && (
@@ -310,8 +314,8 @@ function App() {
         )}
 
         {view === 'study' && cards.length > 0 && (
-          <motion.div key="study" className="container" variants={pageVariants} initial="initial" animate="animate" exit="exit">
-            <div className="header" style={{ marginBottom: '16px' }}>
+          <motion.div key="study" className="container items-center pt-12 pb-28 md:pt-24 md:pb-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+            <div className="w-full max-w-[640px] px-4 md:px-0 mb-4">
               <h1 className="text-purple-100">{topic}</h1>
             </div>
             
@@ -374,47 +378,49 @@ function App() {
         )}
 
         {view === 'quiz' && (
-          <motion.div key="quiz" className="container" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key="quiz" className="container pt-12 pb-28 md:pt-24 md:pb-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
             {quizDone ? (
-              <>
-                <div className="header">
-                  <h1 className="text-2xl font-bold text-purple-100">Quiz Results</h1>
-                </div>
-                <motion.div
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center"
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: "spring", delay: 0.1 }}
-                >
-                  <div className="grid grid-cols-2 gap-6 text-center mb-6">
-                    <div>
-                      <div className="text-3xl font-bold text-green-400">
-                        {quizCards.length - wrongCards.length}
+              <div className="w-full max-w-2xl px-4 md:px-0">
+                <div className="glass-panel p-6 md:p-10 text-center flex flex-col items-center">
+                  <h2 className="text-3xl md:text-4xl text-white font-bold mb-6 md:mb-8 tracking-widest uppercase">Quiz Results</h2>
+                  
+                  <motion.div
+                    className="w-full"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", delay: 0.1 }}
+                  >
+                    <div className="flex justify-center gap-12 md:gap-24 mb-8 md:mb-10 w-full">
+                      <div>
+                        <div className="text-4xl md:text-5xl font-bold text-green-400 mb-2">
+                          {quizCards.length - wrongCards.length}
+                        </div>
+                        <div className="text-white/60 font-medium tracking-wide uppercase text-sm md:text-base">Correct</div>
                       </div>
-                      <div className="text-white/60">Correct</div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-red-400">
-                        {wrongCards.length}
+                      <div>
+                        <div className="text-4xl md:text-5xl font-bold text-red-400 mb-2">
+                          {wrongCards.length}
+                        </div>
+                        <div className="text-white/60 font-medium tracking-wide uppercase text-sm md:text-base">Wrong</div>
                       </div>
-                      <div className="text-white/60">Wrong</div>
                     </div>
-                  </div>
-                  <div className="action-buttons">
-                    {wrongCards.length > 0 && (
-                      <button className="quiz-btn" onClick={() => startQuiz(wrongCards)}>
-                        Re-test Wrong ({wrongCards.length})
+                    
+                    <div className="action-buttons w-full mt-4">
+                      {wrongCards.length > 0 && (
+                        <button onClick={() => startQuiz(wrongCards)} className="secondary-btn cursor-target">
+                          Retry {wrongCards.length} Wrong
+                        </button>
+                      )}
+                      <button onClick={() => startQuiz(cards)} className="secondary-btn cursor-target">
+                        Retake All
                       </button>
-                    )}
-                    <button className={wrongCards.length > 0 ? "secondary-btn" : "quiz-btn"} onClick={() => startQuiz(cards)}>
-                      Retake Full Quiz
-                    </button>
-                    <button className="secondary-btn" onClick={() => setView('study')}>
-                      Back to Cards
-                    </button>
-                  </div>
-                </motion.div>
-              </>
+                      <button onClick={() => setView('study')} className="quiz-btn cursor-target">
+                        Back to Flashcards
+                      </button>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
             ) : (
               <>
                 <div className="header" style={{ marginBottom: '16px' }}>
@@ -447,7 +453,7 @@ function App() {
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-4"
                       >
-                        <div className="w-full min-h-[160px] flex items-center justify-center bg-white/5 border border-white/10 rounded-xl p-8 relative z-10">
+                        <div className="w-full max-w-[640px] px-4 md:px-0 flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded-xl p-8 relative z-10">
                           <p className="text-xl text-purple-100 text-center leading-relaxed m-0">{quizCards[quizIndex].answer}</p>
                         </div>
                         <div className="action-buttons">

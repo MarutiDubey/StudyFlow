@@ -49,7 +49,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-4xl h-[600px] max-h-[85vh] bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
+            className="relative w-[95%] md:w-full max-w-4xl h-[90vh] md:h-[600px] max-h-[85vh] bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
           >
             {/* Close Button */}
             <button
@@ -60,7 +60,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             </button>
 
             {/* Left/Top Area: OptionWheel */}
-            <div className="w-full md:w-[350px] relative border-b md:border-b-0 md:border-r border-white/10 min-h-[300px] shrink-0">
+            <div className="w-full md:w-[350px] relative border-b md:border-b-0 md:border-r border-white/10 h-[250px] md:h-auto md:min-h-[300px] shrink-0">
               <div className="absolute top-6 left-6 z-10">
                 <h2 className="text-xl font-bold text-white tracking-widest uppercase mb-1">Developer Profile</h2>
                 <p className="text-sm text-gray-500 font-mono">Assignment</p>
@@ -85,7 +85,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             </div>
 
             {/* Right/Bottom Area: Details Pane */}
-            <div className="flex-1 bg-[#111111] p-10 flex flex-col justify-center relative min-w-0">
+            <div className="flex-1 bg-[#111111] p-6 md:p-10 flex flex-col justify-center relative min-w-0 overflow-y-auto">
               <motion.div
                 key={selectedIndex}
                 initial={{ opacity: 0, x: 20 }}
@@ -103,8 +103,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     href={selectedItem.link} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.15)] text-base md:text-lg uppercase tracking-wider whitespace-nowrap flex-shrink-0"
-                    style={{ padding: '16px 36px' }}
+                    className="inline-flex items-center justify-center gap-2 md:gap-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.15)] text-sm md:text-lg uppercase tracking-wider whitespace-nowrap flex-shrink-0 px-6 py-4 md:px-12 md:py-5"
                   >
                     <span>{selectedItem.linkText}</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

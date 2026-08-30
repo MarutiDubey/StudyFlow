@@ -214,7 +214,7 @@ export default function ComicView({
       {/* Burst word overlay */}
       {burst && <BurstWord word={burst.word} color={burst.color} visible={!!burst} />}
 
-      <div className="z-10 w-full max-w-3xl px-7 pt-14 pb-10 flex flex-col items-center">
+      <div className="z-10 w-full max-w-3xl px-4 md:px-7 pt-12 pb-28 md:pt-24 md:pb-10 flex flex-col items-center">
 
         {/* ──── INPUT VIEW ──── */}
         {view === 'input' && (
@@ -225,18 +225,20 @@ export default function ComicView({
             className="w-full flex flex-col gap-7 items-center"
           >
             <div className="text-center space-y-3">
-              <ComicText fontSize={5}>StudyFlow</ComicText>
+              <div className="transform scale-[0.6] sm:scale-75 md:scale-100 origin-top">
+                <ComicText fontSize={5}>StudyFlow</ComicText>
+              </div>
               <motion.p
                 initial={{ rotate: 0 }}
                 animate={{ rotate: [-2, 2, -2] }}
                 transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                className="text-lg font-black bg-yellow-300 text-black px-5 py-1.5 inline-block border-4 border-black shadow-[-3px_3px_0_#000]"
+                className="text-base md:text-lg font-black bg-yellow-300 text-black px-4 md:px-5 py-1.5 inline-block border-2 md:border-4 border-black shadow-[-2px_2px_0_#000] md:shadow-[-3px_3px_0_#000]"
               >
                 💥 POW! Flashcards Instantly!
               </motion.p>
             </div>
 
-            <ComicCard className="w-full flex flex-col gap-5 p-6">
+            <ComicCard className="w-full flex flex-col gap-5 p-4 md:p-6 border-2 md:border-4">
               <div className="relative">
                 <span className="absolute -top-3 left-3 bg-white px-2 text-xs font-black border-2 border-black uppercase tracking-widest">Topic</span>
                 <textarea
@@ -255,7 +257,7 @@ export default function ComicView({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="bg-red-500 text-white p-3 font-bold border-2 border-black shadow-[-3px_3px_0_#000] overflow-hidden"
+                    className="bg-red-500 text-white p-2 md:p-3 font-bold border-2 border-black shadow-[-2px_2px_0_#000] md:shadow-[-3px_3px_0_#000] overflow-hidden"
                   >
                     ⚠ {error}
                   </motion.div>
@@ -288,8 +290,8 @@ export default function ComicView({
             className="w-full flex flex-col items-center gap-5"
           >
             {/* Header bar */}
-            <div className="w-full flex justify-between items-center bg-black text-white border-4 border-black p-3 shadow-[-4px_4px_0_#555]">
-              <h2 className="text-lg font-black uppercase truncate max-w-[55%]">{topic}</h2>
+            <div className="w-full flex justify-between items-center bg-black text-white border-2 md:border-4 border-black p-2 md:p-3 shadow-[-2px_2px_0_#555] md:shadow-[-4px_4px_0_#555]">
+              <h2 className="text-base md:text-lg font-black uppercase truncate max-w-[80%] md:max-w-[55%]">{topic}</h2>
               <motion.span
                 key={currentIndex}
                 initial={{ scale: 1.4, color: '#000' }}
@@ -302,7 +304,7 @@ export default function ComicView({
             </div>
 
             {/* Comic progress bar */}
-            <div className="w-full border-4 border-black h-5 bg-white overflow-hidden shadow-[-3px_3px_0_#000]">
+            <div className="w-full border-2 md:border-4 border-black h-3 md:h-5 bg-white overflow-hidden shadow-[-2px_2px_0_#000] md:shadow-[-3px_3px_0_#000]">
               <motion.div
                 className="h-full bg-yellow-300 border-r-4 border-black"
                 animate={{ width: `${progressPct}%` }}
@@ -344,7 +346,7 @@ export default function ComicView({
                         style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                       >
                         <span className="absolute top-3 left-4 font-black text-xs text-gray-400 uppercase tracking-widest">Question</span>
-                        <h3 className="text-2xl font-bold text-black leading-snug">{cards[currentIndex].question}</h3>
+                        <h3 className="text-2xl md:text-4xl font-black leading-tight uppercase">{cards[currentIndex].question}</h3>
                         <motion.span
                           animate={{ scale: [1, 1.08, 1] }}
                           transition={{ repeat: Infinity, duration: 2 }}
@@ -360,7 +362,7 @@ export default function ComicView({
                         style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                       >
                         <span className="absolute top-3 left-4 font-black text-xs text-gray-400 uppercase tracking-widest">Answer</span>
-                        <p className="text-xl font-medium text-black leading-relaxed">{cards[currentIndex].answer}</p>
+                        <p className="text-xl md:text-2xl font-bold leading-relaxed">{cards[currentIndex].answer}</p>
                       </div>
                     </motion.div>
                   </ComicCard>
@@ -369,19 +371,17 @@ export default function ComicView({
             </div>
 
             {/* Nav buttons */}
-            <div className="flex gap-3 w-full items-stretch">
-              <ComicButton onClick={goPrev} disabled={currentIndex === 0} className="py-6 px-4 text-2xl flex-1 whitespace-nowrap" variant="outline">
+            <div className="w-full grid grid-cols-2 md:flex md:flex-row gap-2 md:gap-3 mt-4 md:mt-8">
+              <ComicButton onClick={goPrev} disabled={currentIndex === 0} className="py-4 md:py-6 px-2 md:px-4 text-base md:text-2xl whitespace-nowrap" variant="outline">
                 ← PREV
               </ComicButton>
-              <div className="flex gap-2">
-                <ComicButton onClick={() => startQuiz(cards)} className="py-6 px-5 text-2xl whitespace-nowrap" variant="success">
-                  🎯 QUIZ
-                </ComicButton>
-                <ComicButton onClick={() => setView('input')} className="py-6 px-5 text-2xl whitespace-nowrap" variant="outline">
-                  NEW
-                </ComicButton>
-              </div>
-              <ComicButton onClick={goNext} disabled={currentIndex === cards.length - 1} className="py-6 px-4 text-2xl flex-1 whitespace-nowrap" variant="outline">
+              <ComicButton onClick={() => startQuiz(cards)} className="py-4 md:py-6 px-2 md:px-5 text-base md:text-2xl whitespace-nowrap" variant="success">
+                🎯 QUIZ
+              </ComicButton>
+              <ComicButton onClick={() => setView('input')} className="py-4 md:py-6 px-2 md:px-5 text-base md:text-2xl whitespace-nowrap" variant="outline">
+                NEW
+              </ComicButton>
+              <ComicButton onClick={goNext} disabled={currentIndex === cards.length - 1} className="py-4 md:py-6 px-2 md:px-4 text-base md:text-2xl whitespace-nowrap" variant="outline">
                 NEXT →
               </ComicButton>
             </div>
@@ -406,17 +406,18 @@ export default function ComicView({
                   initial={{ scale: 0.7, rotate: -5 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                  className="transform scale-[0.7] sm:scale-90 md:scale-100"
                 >
                   <ComicText fontSize={4}>QUIZ DONE!</ComicText>
                 </motion.div>
 
                 <ComicCard className="w-full flex flex-col gap-5 items-center p-8 bg-blue-50">
-                  <div className="flex gap-5 font-black text-2xl">
+                  <div className="flex gap-4 md:gap-5 font-black text-xl md:text-2xl">
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.1, ...spring }}
-                      className="bg-green-400 text-black px-5 py-3 border-4 border-black shadow-[-4px_4px_0_#000]"
+                      className="bg-green-400 text-black px-4 py-2 md:px-5 md:py-3 border-2 md:border-4 border-black shadow-[-2px_2px_0_#000] md:shadow-[-4px_4px_0_#000]"
                     >
                       {correctCount} ✓
                     </motion.span>
@@ -424,7 +425,7 @@ export default function ComicView({
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.2, ...spring }}
-                      className="bg-red-400 text-black px-5 py-3 border-4 border-black shadow-[-4px_4px_0_#000]"
+                      className="bg-red-400 text-black px-4 py-2 md:px-5 md:py-3 border-2 md:border-4 border-black shadow-[-2px_2px_0_#000] md:shadow-[-4px_4px_0_#000]"
                     >
                       {wrongCards.length} ✗
                     </motion.span>
@@ -436,11 +437,11 @@ export default function ComicView({
                   </p>
 
                   {wrongCards.length > 0 && (
-                    <ComicButton onClick={() => startQuiz(wrongCards)} className="w-full py-4 text-lg" variant="yellow">
+                    <ComicButton onClick={() => startQuiz(wrongCards)} className="w-full py-3 md:py-4 text-base md:text-lg" variant="yellow">
                       RE-TEST {wrongCards.length} WRONG
                     </ComicButton>
                   )}
-                  <div className="flex gap-3 w-full">
+                  <div className="flex flex-col md:flex-row gap-3 w-full">
                     <ComicButton onClick={() => startQuiz(cards)} className="flex-1 py-3" variant="default">
                       RETAKE ALL
                     </ComicButton>
@@ -452,21 +453,21 @@ export default function ComicView({
               </>
             ) : (
               <>
-                <div className="w-full flex justify-between items-center bg-black text-white border-4 border-black p-3 shadow-[-4px_4px_0_#555]">
-                  <h2 className="text-xl font-black uppercase">QUIZ TIME</h2>
+                <div className="w-full flex justify-between items-center bg-black text-white border-2 md:border-4 border-black p-2 md:p-3 shadow-[-2px_2px_0_#555] md:shadow-[-4px_4px_0_#555]">
+                  <h2 className="text-lg md:text-xl font-black uppercase">QUIZ TIME</h2>
                   <motion.span
                     key={quizIndex}
                     initial={{ scale: 1.5, y: -5 }}
                     animate={{ scale: 1, y: 0 }}
                     transition={snappy}
-                    className="font-black text-lg bg-red-400 text-black px-3 py-1 border-2 border-white"
+                    className="font-black text-base md:text-lg bg-red-400 text-black px-2 py-1 md:px-3 border-2 border-white"
                   >
                     {quizIndex + 1}/{quizCards.length}
                   </motion.span>
                 </div>
 
                 {/* Quiz progress */}
-                <div className="w-full border-4 border-black h-4 bg-white overflow-hidden shadow-[-3px_3px_0_#000]">
+                <div className="w-full border-2 md:border-4 border-black h-3 md:h-4 bg-white overflow-hidden shadow-[-2px_2px_0_#000] md:shadow-[-3px_3px_0_#000]">
                   <motion.div
                     className="h-full bg-red-400 border-r-4 border-black"
                     animate={{ width: `${((quizIndex) / quizCards.length) * 100}%` }}
@@ -497,21 +498,21 @@ export default function ComicView({
                             transition={spring}
                             className="flex flex-col gap-5 w-full items-center"
                           >
-                            <div className="p-5 bg-yellow-100 border-4 border-black shadow-[-4px_4px_0_#000] w-full relative">
+                            <div className="p-4 md:p-5 bg-yellow-100 border-2 md:border-4 border-black shadow-[-2px_2px_0_#000] md:shadow-[-4px_4px_0_#000] w-full relative">
                               <span className="absolute -top-3 left-3 bg-yellow-300 px-2 text-xs font-black border-2 border-black uppercase">Answer</span>
                               <p className="text-lg font-medium text-black">{quizCards[quizIndex].answer}</p>
                             </div>
-                            <div className="flex gap-3 w-full">
+                            <div className="flex flex-col md:flex-row gap-3 w-full">
                               <ComicButton
                                 onClick={() => onCorrect(quizCards[quizIndex].id)}
-                                className="flex-1 py-6 text-lg"
+                                className="flex-1 py-4 md:py-6 text-base md:text-lg"
                                 variant="success"
                               >
                                 ✓ GOT IT!
                               </ComicButton>
                               <ComicButton
                                 onClick={() => onWrong(quizCards[quizIndex].id)}
-                                className="flex-1 py-6 text-lg"
+                                className="flex-1 py-4 md:py-6 text-base md:text-lg"
                                 variant="danger"
                               >
                                 ✗ MISSED
