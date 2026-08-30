@@ -6,8 +6,8 @@ A React app that takes a free-form text input, sends it to an LLM API, and gener
 
 1. Clone the repository:
    ```bash
-   git clone <your-repo-url>
-   cd flow
+   git clone https://github.com/MarutiDubey/StudyFlow.git
+   cd StudyFlow
    ```
 
 2. Install dependencies:
