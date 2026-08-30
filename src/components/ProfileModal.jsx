@@ -60,7 +60,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             </button>
 
             {/* Left/Top Area: OptionWheel */}
-            <div className="w-full md:w-[350px] relative border-b md:border-b-0 md:border-r border-white/10 h-[350px] md:h-auto md:min-h-[300px] shrink-0">
+            <div className="w-full md:w-[350px] relative border-b md:border-b-0 md:border-r border-white/10 h-[420px] md:h-auto md:min-h-[300px] shrink-0">
               <div className="absolute top-6 left-6 z-10">
                 <h2 className="text-xl font-bold text-white tracking-widest uppercase mb-1">Developer Profile</h2>
                 <p className="text-sm text-gray-500 font-mono">Assignment</p>
