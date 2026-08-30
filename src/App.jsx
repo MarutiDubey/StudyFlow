@@ -59,6 +59,7 @@ function App() {
   }, [])
 
   const isComic = themeMode === 'comic'
+  const wrongCards = quizCards.filter(c => quizAnswers[c.id] === 'wrong')
 
   const ThemeToggleBtn = (
     <button
@@ -181,8 +182,8 @@ function App() {
           currentIndex={currentIndex} nextCard={nextCard} prevCard={prevCard} 
           flippedCards={flippedCards} toggleFlip={toggleFlip} 
           startQuiz={startQuiz} quizDone={quizDone} 
-          correctCount={quizCards.length - Object.values(quizAnswers).filter(a => a === 'wrong').length} 
-          wrongCards={quizCards.filter(c => quizAnswers[c.id] === 'wrong')} 
+          correctCount={quizCards.length - wrongCards.length} 
+          wrongCards={wrongCards} 
           quizIndex={quizIndex} quizCards={quizCards} 
           showAnswer={showAnswer} setShowAnswer={setShowAnswer} handleAnswer={handleAnswer}
         />
@@ -336,20 +337,25 @@ function App() {
                   <div className="grid grid-cols-2 gap-6 text-center mb-6">
                     <div>
                       <div className="text-3xl font-bold text-green-400">
-                        {quizCards.length - Object.values(quizAnswers).filter(a => a === 'wrong').length}
+                        {quizCards.length - wrongCards.length}
                       </div>
                       <div className="text-white/60">Correct</div>
                     </div>
                     <div>
                       <div className="text-3xl font-bold text-red-400">
-                        {Object.values(quizAnswers).filter(a => a === 'wrong').length}
+                        {wrongCards.length}
                       </div>
                       <div className="text-white/60">Wrong</div>
                     </div>
                   </div>
                   <div className="action-buttons">
-                    <button className="quiz-btn" onClick={() => startQuiz(cards)}>
-                      Retake Quiz
+                    {wrongCards.length > 0 && (
+                      <button className="quiz-btn" onClick={() => startQuiz(wrongCards)}>
+                        Re-test Wrong ({wrongCards.length})
+                      </button>
+                    )}
+                    <button className={wrongCards.length > 0 ? "secondary-btn" : "quiz-btn"} onClick={() => startQuiz(cards)}>
+                      Retake Full Quiz
                     </button>
                     <button className="secondary-btn" onClick={() => setView('study')}>
                       Back to Cards

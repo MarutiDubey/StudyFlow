@@ -482,7 +482,10 @@ export default function ComicView({
                     exit={{ x: -60, opacity: 0, transition: { duration: 0.15 } }}
                     className="w-full"
                   >
-                    <ComicCard className="w-full flex flex-col gap-6 items-center text-center p-7">
+                    <ComicCard 
+                      className="w-full flex flex-col gap-6 items-center text-center p-7"
+                      style={{ minHeight: '340px', justifyContent: 'center' }}
+                    >
                       <h3 className="text-2xl font-bold text-black leading-snug">{quizCards[quizIndex].question}</h3>
 
                       <AnimatePresence mode="wait">
@@ -501,14 +504,14 @@ export default function ComicView({
                             <div className="flex gap-3 w-full">
                               <ComicButton
                                 onClick={() => onCorrect(quizCards[quizIndex].id)}
-                                className="flex-1 py-4 text-lg"
+                                className="flex-1 py-6 text-lg"
                                 variant="success"
                               >
                                 ✓ GOT IT!
                               </ComicButton>
                               <ComicButton
                                 onClick={() => onWrong(quizCards[quizIndex].id)}
-                                className="flex-1 py-4 text-lg"
+                                className="flex-1 py-6 text-lg"
                                 variant="danger"
                               >
                                 ✗ MISSED
@@ -519,7 +522,7 @@ export default function ComicView({
                           <motion.div key="reveal" className="w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                             <ComicButton
                               onClick={() => setShowAnswer(true)}
-                              className="w-full py-5 text-xl"
+                              className="w-full py-6 text-xl"
                               variant="default"
                             >
                               REVEAL ANSWER
