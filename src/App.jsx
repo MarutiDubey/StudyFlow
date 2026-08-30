@@ -6,6 +6,7 @@ import SmoothFollower from './Cursor'
 import { FlickeringGrid } from './FlickeringGrid'
 import InteractiveHoverButton from './InteractiveHoverButton'
 import ComicView from './ComicView'
+import ProfileModal from './components/ProfileModal'
 import TargetCursor from './TargetCursor'
 import EchoText from './EchoText'
 import './InteractiveHoverButton.css'
@@ -29,6 +30,7 @@ function App() {
   const [quizDone, setQuizDone] = useState(false)
   const [slideDirection, setSlideDirection] = useState(1)
   const [btnHovered, setBtnHovered] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   const toggleBtnRef = useRef(null)
 
@@ -174,6 +176,31 @@ function App() {
   if (themeMode === 'comic') {
     return (
       <>
+        <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+        <div className="fixed top-5 left-5 z-40 flex items-center gap-4">
+          <button 
+            onClick={() => setView('input')}
+            className="bg-yellow-300 text-black border-4 border-black font-black uppercase shadow-[4px_4px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#000] transition-all flex items-center justify-center cursor-target"
+            style={{ padding: '10px' }}
+            title="Home"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </button>
+          <button 
+            onClick={() => setIsProfileOpen(true)}
+            className="bg-yellow-300 text-black border-4 border-black font-black uppercase shadow-[4px_4px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#000] transition-all flex items-center gap-2 cursor-target whitespace-nowrap flex-shrink-0"
+            style={{ padding: '10px 20px' }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Author Profile</span>
+          </button>
+        </div>
         {ThemeToggleBtn}
         <TargetCursor spinDuration={2} hideDefaultCursor={true} parallaxOn={true} cursorColor="#ff0000" targetSelector=".cursor-target" />
         <ComicView
@@ -193,6 +220,31 @@ function App() {
 
   return (
     <>
+      <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+      <div className="fixed top-5 left-5 z-40 flex items-center gap-4">
+        <button 
+          onClick={() => setView('input')}
+          className="bg-white hover:bg-gray-200 border-2 border-black text-black rounded-full font-bold shadow-[0_4px_16px_rgba(255,255,255,0.1)] transition-all hover:scale-105 flex items-center justify-center cursor-target"
+          style={{ padding: '10px' }}
+          title="Home"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </button>
+        <button 
+          onClick={() => setIsProfileOpen(true)}
+          className="bg-white hover:bg-gray-200 border-2 border-black text-black rounded-full font-bold shadow-[0_4px_16px_rgba(255,255,255,0.1)] transition-all hover:scale-105 flex items-center gap-2 cursor-target whitespace-nowrap flex-shrink-0"
+          style={{ padding: '10px 24px' }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Author Profile</span>
+        </button>
+      </div>
       {ThemeToggleBtn}
       <FlickeringGrid
         className="fixed inset-0 z-[-1]"
