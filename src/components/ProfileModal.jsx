@@ -103,10 +103,11 @@ export default function ProfileModal({ isOpen, onClose }) {
                     href={selectedItem.link} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 md:gap-4 bg-white hover:bg-gray-200 border-2 border-black text-black font-bold rounded-full shadow-[0_4px_16px_rgba(255,255,255,0.1)] transition-all hover:scale-105 text-sm md:text-lg uppercase tracking-wider whitespace-nowrap flex-shrink-0 px-6 py-4 md:px-12 md:py-5"
+                    className="bg-white hover:bg-gray-200 border-2 border-black text-black rounded-full font-bold shadow-[0_4px_16px_rgba(255,255,255,0.1)] transition-all hover:scale-105 inline-flex items-center justify-center gap-2 cursor-target whitespace-nowrap flex-shrink-0 uppercase"
+                    style={{ padding: '10px 24px' }}
                   >
                     <span>{selectedItem.linkText}</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="7" y1="17" x2="17" y2="7"></line>
                       <polyline points="7 7 17 7 17 17"></polyline>
                     </svg>
