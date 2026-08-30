@@ -16,9 +16,9 @@ A React app that takes a free-form text input, sends it to an LLM API, and gener
    ```
 
 3. Configure the environment variables:
-   - Obtain your Tokenin API key.
+   - Obtain an API key from whatever LLM provider you prefer or currently have (the app uses an OpenAI-compatible endpoint).
    - Create a `.env` file in the root of the project.
-   - Add your key:
+   - Add your API key:
      ```env
      TOKENIN_API_KEY=your_key_here
      ```
