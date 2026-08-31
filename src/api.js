@@ -9,7 +9,7 @@ function parseAIResponse(raw) {
   const end = text.lastIndexOf('}')
 
   if (start === -1 || end === -1) {
-    throw new Error('The AI returned an unreadable format. Please try again.')
+    throw new Error('Unreadable response format')
   }
 
   text = text.slice(start, end + 1)
@@ -18,11 +18,11 @@ function parseAIResponse(raw) {
   try {
     parsed = JSON.parse(text)
   } catch {
-    throw new Error('The AI returned invalid data. Please try again.')
+    throw new Error('Invalid JSON data')
   }
 
   if (!Array.isArray(parsed.cards) || parsed.cards.length === 0) {
-    throw new Error('The AI did not return any flashcards. Please try a different topic.')
+    throw new Error('No flashcards returned')
   }
 
   const valid = parsed.cards
@@ -34,7 +34,7 @@ function parseAIResponse(raw) {
     .filter(card => card.question.length > 0 && card.answer.length > 0)
 
   if (valid.length === 0) {
-    throw new Error('The flashcards generated were empty. Please try again.')
+    throw new Error('Generated cards were empty')
   }
 
   return valid
@@ -63,7 +63,7 @@ export async function generateCards(topic) {
 
     if (!response.ok) {
       const err = await response.json()
-      throw new Error(err.error || 'Server returned an error.')
+      throw new Error(err.error || 'Server error')
     }
 
     const data = await response.json()
@@ -82,7 +82,7 @@ export async function generateCards(topic) {
     }
 
     if (err.name === 'AbortError') {
-      throw new Error('Request timed out. Please check your connection and try again.')
+      throw new Error('Request timed out')
     }
 
     throw err

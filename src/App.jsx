@@ -148,9 +148,6 @@ function App() {
       ...prev,
       [cardId]: result
     }))
-    if (result === 'wrong') {
-      console.log('Card marked wrong:', cardId)
-    }
     if (quizIndex < quizCards.length - 1) {
       setQuizIndex(i => i + 1)
       setShowAnswer(false)
@@ -159,13 +156,13 @@ function App() {
     }
   }
 
-  const pageVariants = {
+  const viewAnim = {
     initial: { opacity: 0, x: -50 },
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: 50 }
   }
 
-  const cardSlideVariants = {
+  const slideAnim = {
     initial: (d) => ({ x: d > 0 ? 60 : -60, opacity: 0 }),
     animate: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 300, damping: 25 } },
     exit: (d) => ({ x: d > 0 ? -60 : 60, opacity: 0, transition: { duration: 0.2 } })
@@ -261,7 +258,7 @@ function App() {
       <SmoothFollower />
       <AnimatePresence mode="wait">
         {view === 'input' && (
-          <motion.div key="input" className="container pt-12 pb-28 md:pt-24 md:pb-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key="input" className="container pt-12 pb-28 md:pt-24 md:pb-12" variants={viewAnim} initial="initial" animate="animate" exit="exit">
             <div className="header">
               <h1>
                 <EchoText
@@ -314,7 +311,7 @@ function App() {
         )}
 
         {view === 'study' && cards.length > 0 && (
-          <motion.div key="study" className="container items-center pt-12 pb-28 md:pt-24 md:pb-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key="study" className="container items-center pt-12 pb-28 md:pt-24 md:pb-12" variants={viewAnim} initial="initial" animate="animate" exit="exit">
             <div className="w-full max-w-[640px] px-4 md:px-0 mb-4">
               <h1 className="text-purple-100">{topic}</h1>
             </div>
@@ -332,7 +329,7 @@ function App() {
               <motion.div
                 key={currentIndex}
                 custom={slideDirection}
-                variants={cardSlideVariants}
+                variants={slideAnim}
                 initial="initial"
                 animate="animate"
                 exit="exit"
@@ -378,7 +375,7 @@ function App() {
         )}
 
         {view === 'quiz' && (
-          <motion.div key="quiz" className="container pt-12 pb-28 md:pt-24 md:pb-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key="quiz" className="container pt-12 pb-28 md:pt-24 md:pb-12" variants={viewAnim} initial="initial" animate="animate" exit="exit">
             {quizDone ? (
               <div className="w-full max-w-2xl px-4 md:px-0">
                 <div className="glass-panel p-6 md:p-10 text-center flex flex-col items-center">
