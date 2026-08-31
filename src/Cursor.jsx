@@ -6,7 +6,6 @@ export default function SmoothFollower() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Ring cursor me thoda lag spring effect diya hai
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
@@ -14,7 +13,6 @@ export default function SmoothFollower() {
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
-  // Dot ke liye snappy spring rakhi hai
   const dotSpringConfig = { damping: 25, stiffness: 600, mass: 0.1 };
   const dotXSpring = useSpring(cursorX, dotSpringConfig);
   const dotYSpring = useSpring(cursorY, dotSpringConfig);
@@ -41,7 +39,6 @@ export default function SmoothFollower() {
   useEffect(() => {
     const onOver = (e) => {
       const t = e.target;
-      // Added inputs, textareas, card wrappers so they trigger hover in StudyFlow
       const isInteractive =
         t.tagName === "BUTTON" ||
         t.tagName === "A" ||
@@ -62,7 +59,6 @@ export default function SmoothFollower() {
     <AnimatePresence>
       {isVisible && (
         <>
-          {/* Trailing ring */}
           <motion.div
             className="custom-cursor-ring"
             style={{
@@ -78,7 +74,6 @@ export default function SmoothFollower() {
             }}
             transition={{ duration: 0.2 }}
           />
-          {/* Precise center dot */}
           <motion.div
             className="custom-cursor-dot"
             style={{

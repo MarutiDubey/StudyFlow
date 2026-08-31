@@ -21,7 +21,6 @@ export default function ProfileModal({ isOpen, onClose }) {
   const selectedItem = profileData[selectedIndex];
   const labels = profileData.map(item => item.label);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -40,10 +39,8 @@ export default function ProfileModal({ isOpen, onClose }) {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 md:p-8"
         >
-          {/* Close Area (Click outside to close) */}
           <div className="absolute inset-0" onClick={onClose} />
 
-          {/* Modal Container */}
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
@@ -51,7 +48,6 @@ export default function ProfileModal({ isOpen, onClose }) {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-[95%] md:w-full max-w-4xl h-[90vh] md:h-[600px] max-h-[85vh] bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
           >
-            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/20 border border-white/10 text-white transition-colors"
@@ -59,7 +55,6 @@ export default function ProfileModal({ isOpen, onClose }) {
               ✕
             </button>
 
-            {/* Left/Top Area: OptionWheel */}
             <div className="w-full md:w-[350px] relative border-b md:border-b-0 md:border-r border-white/10 h-[420px] md:h-auto md:min-h-[300px] shrink-0">
               <div className="absolute top-6 left-6 z-10">
                 <h2 className="text-xl font-bold text-white tracking-widest uppercase mb-1">Developer Profile</h2>
@@ -84,7 +79,6 @@ export default function ProfileModal({ isOpen, onClose }) {
               />
             </div>
 
-            {/* Right/Bottom Area: Details Pane */}
             <div className="flex-1 bg-[#111111] p-6 md:p-10 flex flex-col justify-center relative min-w-0 overflow-y-auto">
               <motion.div
                 key={selectedIndex}

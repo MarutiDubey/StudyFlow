@@ -175,7 +175,6 @@ function App() {
     return (
       <>
         <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
-        {/* Navigation Bar (Bottom on Mobile, Top on Desktop) */}
         <div className="fixed bottom-0 left-0 w-full md:w-auto md:top-5 md:left-5 md:bottom-auto bg-yellow-300 md:bg-transparent border-t-4 border-black md:border-none p-3 md:p-0 flex justify-around md:justify-start items-center gap-2 md:gap-4 z-50 shadow-[0_-4px_0_#000] md:shadow-none">
           <button 
             onClick={() => setView('input')}
@@ -224,7 +223,6 @@ function App() {
   return (
     <>
       <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
-      {/* Navigation Bar (Bottom on Mobile, Top on Desktop) */}
       <div className="fixed bottom-0 left-0 w-full md:w-auto md:top-5 md:left-5 md:bottom-auto bg-[#1a1a1a]/95 backdrop-blur-lg border-t border-white/20 md:bg-transparent md:backdrop-blur-none md:border-none p-4 md:p-0 flex justify-around md:justify-start items-center gap-2 md:gap-4 z-50">
         <button 
           onClick={() => setView('input')}

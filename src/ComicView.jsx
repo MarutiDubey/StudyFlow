@@ -201,7 +201,6 @@ export default function ComicView({
   return (
     <div className="min-h-screen w-full bg-white text-black font-mono flex flex-col items-center relative overflow-hidden" style={{ zoom: 1.15 }}>
 
-      {/* Halftone bg */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -211,12 +210,10 @@ export default function ComicView({
         }}
       />
 
-      {/* Burst word overlay */}
       {burst && <BurstWord word={burst.word} color={burst.color} visible={!!burst} />}
 
       <div className="z-10 w-full max-w-3xl px-4 md:px-7 pt-12 pb-28 md:pt-24 md:pb-10 flex flex-col items-center">
 
-        {/* ──── INPUT VIEW ──── */}
         {view === 'input' && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -282,14 +279,12 @@ export default function ComicView({
           </motion.div>
         )}
 
-        {/* ──── STUDY VIEW ──── */}
         {view === 'study' && cards.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="w-full flex flex-col items-center gap-5"
           >
-            {/* Header bar */}
             <div className="w-full flex justify-between items-center bg-black text-white border-2 md:border-4 border-black p-2 md:p-3 shadow-[-2px_2px_0_#555] md:shadow-[-4px_4px_0_#555]">
               <h2 className="text-base md:text-lg font-black uppercase truncate max-w-[80%] md:max-w-[55%]">{topic}</h2>
               <motion.span
@@ -303,7 +298,6 @@ export default function ComicView({
               </motion.span>
             </div>
 
-            {/* Comic progress bar */}
             <div className="w-full border-2 md:border-4 border-black h-3 md:h-5 bg-white overflow-hidden shadow-[-2px_2px_0_#000] md:shadow-[-3px_3px_0_#000]">
               <motion.div
                 className="h-full bg-yellow-300 border-r-4 border-black"
@@ -312,7 +306,6 @@ export default function ComicView({
               />
             </div>
 
-            {/* Flashcard */}
             <div className="w-full relative" style={{ height: '320px', perspective: '1000px' }}>
               <AnimatePresence>
                 {isSliding && <SpeedLines key="speedlines" />}
@@ -340,7 +333,6 @@ export default function ComicView({
                         toggleFlip(cards[currentIndex].id)
                       }}
                     >
-                      {/* Front */}
                       <div
                         className="absolute inset-0 flex flex-col justify-center items-center text-center p-8 bg-white"
                         style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
@@ -356,7 +348,6 @@ export default function ComicView({
                         </motion.span>
                       </div>
 
-                      {/* Back */}
                       <div
                         className="absolute inset-0 flex flex-col justify-center items-center text-center p-8 bg-yellow-100"
                         style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -370,7 +361,6 @@ export default function ComicView({
               </AnimatePresence>
             </div>
 
-            {/* Nav buttons */}
             <div className="w-full grid grid-cols-2 md:flex md:flex-row gap-2 md:gap-3 mt-4 md:mt-8">
               <ComicButton onClick={goPrev} disabled={currentIndex === 0} className="py-4 md:py-6 px-2 md:px-4 text-base md:text-2xl whitespace-nowrap" variant="outline">
                 ← PREV
@@ -392,7 +382,6 @@ export default function ComicView({
           </motion.div>
         )}
 
-        {/* ──── QUIZ VIEW ──── */}
         {view === 'quiz' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -466,7 +455,6 @@ export default function ComicView({
                   </motion.span>
                 </div>
 
-                {/* Quiz progress */}
                 <div className="w-full border-2 md:border-4 border-black h-3 md:h-4 bg-white overflow-hidden shadow-[-2px_2px_0_#000] md:shadow-[-3px_3px_0_#000]">
                   <motion.div
                     className="h-full bg-red-400 border-r-4 border-black"
