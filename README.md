@@ -1,5 +1,7 @@
 # StudyFlow - AI Flashcard Generator
 
+**Live Demo:** [https://studyflashcard.vercel.app/](https://studyflashcard.vercel.app/)
+
 A React app that takes a free-form text input, sends it to an LLM API, and generates an interactive flashcard and quiz tool.
 
 ## Setup Instructions
